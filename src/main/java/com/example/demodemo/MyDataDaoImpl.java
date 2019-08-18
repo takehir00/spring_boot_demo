@@ -5,6 +5,8 @@ import org.springframework.stereotype.Repository;
 import javax.persistence.EntityManager;
 import javax.persistence.Query;
 import javax.persistence.criteria.CriteriaBuilder;
+import javax.persistence.criteria.CriteriaQuery;
+import javax.persistence.criteria.Root;
 import java.util.List;
 
 @Repository
@@ -21,22 +23,32 @@ public class MyDataDaoImpl implements MyDataDao<MyData> {
 
     @Override
     public List<MyData> getAll() {
-        Query query = entityManager.createQuery("from MyData", MyData.class);
-        List<MyData> list = query.getResultList();
-        entityManager.close();
+        CriteriaBuilder builder = entityManager.getCriteriaBuilder();
+        CriteriaQuery<MyData> query = builder.createQuery(MyData.class);
+        Root<MyData> root = query.from(MyData.class);
+        query.select(root);
+        List<MyData> list = entityManager
+                .createQuery(query)
+                .getResultList();
         return list;
     }
 
     @Override
     public MyData findById(Long id) {
-        Query query = entityManager.createQuery("from MyData where id = " + id, MyData.class);
-        MyData data = (MyData) query.getSingleResult();
-        return data;
+        return null;
     }
 
     @Override
     public List<MyData> findByName(String name) {
-        Query query = entityManager.createQuery("from MyData where name = " + name, MyData.class)
-        return query.getResultList();
+        CriteriaBuilder builder = entityManager.getCriteriaBuilder();
+        CriteriaQuery<MyData> query = builder.createQuery(MyData.class);
+        Root<MyData> root = query.from(MyData.class);
+        query.select(root)
+                .where(builder.equal(root.get("name"), name));
+
+        List<MyData> list = entityManager
+                .createQuery(query)
+                .getResultList();
+        return list;
     }
 }

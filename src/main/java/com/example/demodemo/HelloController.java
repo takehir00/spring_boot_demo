@@ -11,6 +11,8 @@ import org.springframework.web.servlet.ModelAndView;
 import javax.annotation.PostConstruct;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import javax.servlet.http.HttpServletRequest;
+import java.util.List;
 
 @Controller
 public class HelloController {
@@ -63,5 +65,30 @@ public class HelloController {
         myDataRepository.saveAndFlush(myData);
         mav.setViewName("index");
         return new ModelAndView("redirect:/");
+    }
+
+    @RequestMapping(value="/find", method = RequestMethod.GET)
+    public ModelAndView find(ModelAndView mav) {
+        MyDataDao myDataDao = new MyDataDaoImpl(entityManager);
+        mav.setViewName("find");
+        mav.addObject("title", "Find Page");
+        mav.addObject("msg", "MyDataのサンプルです。");
+        mav.addObject("value", "");
+        Iterable<MyData> list = myDataDao.getAll();
+        mav.addObject("datalist", list);
+        return mav;
+    }
+
+    @RequestMapping(value="/find", method=RequestMethod.POST)
+    public ModelAndView search(HttpServletRequest request, ModelAndView mav) {
+        MyDataDao myDataDao = new MyDataDaoImpl(entityManager);
+        mav.setViewName("find");
+        String param = request.getParameter("name");
+        mav.addObject("title", "Find Result");
+        mav.addObject("msg", param +  "の検索結果");
+        mav.addObject("value", param);
+        List<MyData> list = myDataDao.findByName(param);
+        mav.addObject("datalist", list);
+        return mav;
     }
 }
