@@ -1,11 +1,7 @@
 package com.example.demodemo;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import javax.persistence.*;
+import java.util.List;
 
 @Entity
 @Table(name="mydata")
@@ -27,6 +23,18 @@ public class MyData {
 
     @Column(nullable = true)
     private String memo;
+
+    @OneToMany(cascade=CascadeType.ALL)
+    @Column
+    private List<MsgData> msgDataList;
+
+    public List<MsgData> getMsgdatas() {
+        return msgDataList;
+    }
+
+    public void setMsgdatas(List<MsgData> msgDataList) {
+        this.msgDataList = msgDataList ;
+    }
 
     public long getId() {
         return id;
