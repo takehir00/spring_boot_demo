@@ -25,7 +25,7 @@ public class HelloController {
 
     @PostConstruct
     public void init(){
-        MyDataDaoImpl dao = new MyDataDaoImpl(entityManager); //●
+        MyDataDaoImpl dao = new MyDataDaoImpl(entityManager);
         MyData d1 = new MyData();
         d1.setName("tuyano");
         d1.setAge(123);
@@ -48,9 +48,10 @@ public class HelloController {
 
     @RequestMapping(value = "/", method = RequestMethod.GET)
     public ModelAndView index(@ModelAttribute("formModel") MyData myData, ModelAndView mav) {
+        MyDataDao myDataDao = new MyDataDaoImpl(entityManager);
         mav.setViewName("index");
         mav.addObject("msg", "マイデータのサンプルです");
-        Iterable<MyData> list = dao.getAll();
+        Iterable<MyData> list = myDataDao.getAll();
         mav.addObject("datalist", list);
         return mav;
     }
