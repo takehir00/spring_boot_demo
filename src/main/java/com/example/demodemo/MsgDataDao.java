@@ -6,5 +6,5 @@ public interface MsgDataDao<T> {
 
     public List<MsgData> getAll();
 
-    MsgData findById();
+    MsgData findById(Long id);
 }
