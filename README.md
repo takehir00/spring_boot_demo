@@ -1,1 +1,1 @@
-# spring_bootを使ったMVCを最小機能で実現しSpringbootの理解を深めるために作ったプロジェクト
+# spring_bootを使ったMVCアーキテクチャを最小機能で実現しSpringbootの理解を深めるために作ったプロジェクト
